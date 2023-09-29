@@ -1,5 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { StockHistory } from './stockHistory.entity';
+import { PriceHistory } from './priceHistory.entity';
 
 @Schema()
 export class Products extends Document {
@@ -23,6 +25,12 @@ export class Products extends Document {
 
   @Prop({ required: true })
   stock: number;
+
+  @Prop({ type: Array<StockHistory> })
+  historialStock: Array<StockHistory>;
+
+  @Prop({ type: Array<PriceHistory> })
+  historialPrecio: Array<PriceHistory>;
 }
 
 export const ProductsSchema = SchemaFactory.createForClass(Products);
