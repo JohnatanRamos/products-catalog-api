@@ -54,7 +54,7 @@ export class ProductsService {
     const { sku } = editProductDto;
 
     // Verificar si el producto a editar existe
-    const existingProduct = await this.productModel.findById(productId).exec();
+    const existingProduct = await this.productModel.findById(productId);
 
     if (!existingProduct) {
       throw new NotFoundException('Producto no encontrado');
@@ -77,7 +77,6 @@ export class ProductsService {
 
     // Aplicar las actualizaciones al producto
     Object.assign(existingProduct, editProductDto);
-
     return existingProduct.save();
   }
 
@@ -91,6 +90,7 @@ export class ProductsService {
         stockNuevo: newProduct.stock,
         fecha: new Date(),
       });
+      existingProduct.markModified('historialStock');
     }
 
     if (existingProduct.precio !== newProduct.precio) {
@@ -99,6 +99,7 @@ export class ProductsService {
         precioNuevo: newProduct.precio,
         fecha: new Date(),
       });
+      existingProduct.markModified('historialPrecio');
     }
   }
 
